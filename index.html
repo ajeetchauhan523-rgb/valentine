@@ -23,6 +23,7 @@ body {
 h1 { font-size: 2.2rem; }
 p { font-size: 1.1rem; line-height: 1.6; }
 
+/* ❤️ Heart */
 .heart {
   font-size: 70px;
   animation: beat 1s infinite;
@@ -31,8 +32,9 @@ p { font-size: 1.1rem; line-height: 1.6; }
   50% { transform: scale(1.25); }
 }
 
-/* SLIDESHOW – FACE SAFE */
+/* 📸 SLIDESHOW */
 .slideshow {
+  position: relative;
   height: 260px;
   margin: 20px 0;
   border-radius: 20px;
@@ -40,16 +42,19 @@ p { font-size: 1.1rem; line-height: 1.6; }
   background: rgba(255,255,255,0.2);
 }
 .slideshow img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;   /* 🔥 FIX: NO FACE CUT */
-  display: none;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
 .slideshow img.active {
-  display: block;
+  opacity: 1;
 }
 
-/* BUTTONS */
+/* 🎯 Buttons */
 button {
   padding: 14px 22px;
   border-radius: 30px;
@@ -66,15 +71,27 @@ button {
 }
 .hidden { display:none; }
 
-/* LETTER */
-.letter {
-  margin-top: 40px;
-  background: rgba(255,255,255,0.15);
+/* 💌 Cards */
+.card {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.18);
   padding: 20px;
   border-radius: 20px;
 }
 
-/* CELEBRATION */
+/* 💓 HEARTBEAT TIMER */
+#timerBox {
+  animation: heartbeat 1.3s infinite;
+}
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* 🎉 Celebration */
 #celebration {
   position: fixed;
   inset: 0;
@@ -87,11 +104,26 @@ button {
 }
 .hug { font-size: 90px; animation:hug 1.2s infinite; }
 .kiss { font-size: 70px; animation:kiss 1.5s infinite; }
+
 @keyframes hug { 50% { transform: scale(1.3); } }
 @keyframes kiss {
   0% { opacity:0; transform: translateY(10px); }
   50% { opacity:1; }
   100% { opacity:0; transform: translateY(-10px); }
+}
+
+/* 🎊 Confetti */
+.confetti {
+  position: fixed;
+  top: -10px;
+  width: 8px;
+  height: 14px;
+  background: white;
+  animation: fall 3s linear infinite;
+  z-index: 11;
+}
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(360deg); }
 }
 </style>
 </head>
@@ -103,11 +135,16 @@ button {
 </audio>
 
 <div class="container">
+
   <h1>Ajeet ❤️ Nikita</h1>
 
-  <p>Every picture here holds a memory I never want to forget.</p>
+  <p>
+    Har tasveer ek kahani hai,<br>
+    aur har kahani mein **tum ho** 💖
+  </p>
 
-  <div class="slideshow">
+  <!-- 📸 SLIDESHOW -->
+  <div class="slideshow" id="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
     <img src="photo3.jpg">
@@ -116,7 +153,11 @@ button {
 
   <div class="heart">❤️</div>
 
-  <p>Nikita, you make my world softer, brighter, and happier.</p>
+  <p>
+    Nikita,<br>
+    tum meri Valentine nahi,<br>
+    **meri aadat ho** 💫
+  </p>
 
   <button class="yes" onclick="showProposal()">Click here 💌</button>
 
@@ -126,20 +167,35 @@ button {
     <button class="no" onmouseover="moveNo(this)">No 🙈</button>
   </div>
 
-  <div class="letter">
-    <h2>My Love Letter to You, Nikita 💌</h2>
+  <!-- 💞 RELATIONSHIP TIMER -->
+  <div class="card" id="timerBox">
+    <h2>Hum Kab Se Saath Hain 💞</h2>
+    <p>17 July 2018 se lekar aaj tak…</p>
+    <h3 id="timer"></h3>
+    <p id="totalDays" style="margin-top:10px;font-weight:bold;"></p>
+  </div>
+
+  <!-- 💌 LOVE LETTER -->
+  <div class="card">
+    <h2>Meri Chhoti Si Baat 💌</h2>
     <p>
-      Somewhere between our laughs and long talks,<br>
-      you became my favorite part of every day.<br><br>
+      Shayad main perfect nahi hoon,<br>
+      par tumhare saath sab kuch perfect lagta hai.<br><br>
 
-      You make life feel warmer, calmer, and more meaningful.<br><br>
+      Tum meri peace ho,<br>
+      meri strength ho,<br>
+      aur meri sabse khoobsurat kahani ho 🤍<br><br>
 
-      I choose you — today, tomorrow, always.<br><br>
-      <strong>Ajeet ❤️</strong>
+      Aaj bhi, kal bhi,<br>
+      **hamesha tum hi.**<br><br>
+
+      — Ajeet ❤️
     </p>
   </div>
+
 </div>
 
+<!-- 🎉 CELEBRATION -->
 <div id="celebration">
   <div class="hug">🤗</div>
   <div class="kiss">😘</div>
@@ -149,33 +205,94 @@ button {
 </div>
 
 <script>
-// slideshow
+/* 📸 SLIDESHOW */
 let slides = document.querySelectorAll(".slideshow img");
-let i = 0;
-setInterval(()=>{
-  slides[i].classList.remove("active");
-  i = (i+1)%slides.length;
+let current = 0;
+function showSlide(i){
+  slides.forEach(s => s.classList.remove("active"));
   slides[i].classList.add("active");
-},3000);
+}
+setInterval(()=>{
+  current = (current + 1) % slides.length;
+  showSlide(current);
+}, 3500);
 
-// proposal + music
+/* 👉 Swipe */
+let startX = 0;
+const slider = document.getElementById("slideshow");
+slider.addEventListener("touchstart", e=>{
+  startX = e.touches[0].clientX;
+});
+slider.addEventListener("touchend", e=>{
+  let endX = e.changedTouches[0].clientX;
+  if(startX - endX > 50){
+    current = (current + 1) % slides.length;
+  } else if(endX - startX > 50){
+    current = (current - 1 + slides.length) % slides.length;
+  }
+  showSlide(current);
+});
+
+/* 🎶 Proposal */
 function showProposal(){
   document.getElementById("proposal").classList.remove("hidden");
   document.getElementById("music").play();
 }
 
-// runaway no
+/* 😄 Runaway No */
 function moveNo(btn){
   btn.style.transform =
     `translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
 
-// celebration
+/* 💞 RELATIONSHIP TIMER */
+const startDate = new Date("2018-07-17T00:00:00");
+
+function updateTimer() {
+  const now = new Date();
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
+
+  if (days < 0) {
+    months--;
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  const diff = now - startDate;
+  const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
+
+  document.getElementById("timer").innerHTML =
+    `${years} saal, ${months} mahine, ${days} din<br>
+     ${hours} ghante, ${minutes} minute, ${seconds} seconds 💖`;
+
+  document.getElementById("totalDays").innerHTML =
+    `Total days together: ${totalDays} days ❤️`;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+/* 🎉 Celebration */
 function celebrate(){
   document.getElementById("celebration").style.display="flex";
+  for(let i=0;i<40;i++){
+    let c = document.createElement("div");
+    c.className="confetti";
+    c.style.left = Math.random()*100+"vw";
+    c.style.background = ["#fff","#ffd1dc","#ffb3c6"][Math.floor(Math.random()*3)];
+    c.style.animationDuration = (2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
 }
 </script>
 
 </body>
 </html>
-
