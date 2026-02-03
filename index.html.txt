@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ajeet ❤️ Nikita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff4f7b,#ff758c);
+  color: white;
+  text-align: center;
+}
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 30px 15px;
+}
+img {
+  width: 100%;
+  border-radius: 16px;
+  margin: 10px 0;
+}
+button {
+  padding: 14px 22px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  margin: 10px;
+  cursor: pointer;
+}
+.yes { background: white; color:#ff4f7b; }
+.no { background:#ffd1dc; }
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Ajeet ❤️ Nikita</h1>
+  <p>This page is LIVE and working 💖</p>
+
+  <img src="photo1.jpg" alt="photo">
+
+  <p>Nikita, will you be my Valentine? 💌</p>
+
+  <button class="yes" onclick="show()">Yes 😍</button>
+  <button class="no" onmouseover="move(this)">No 🙈</button>
+
+  <div id="msg" class="hidden">
+    <h2>She said YES!!! 🎉❤️</h2>
+    <p>Forever yours,<br><b>Ajeet</b></p>
+  </div>
+</div>
+
+<script>
+function show(){
+  document.getElementById("msg").classList.remove("hidden");
+}
+function move(btn){
+  btn.style.transform =
+    `translate(${Math.random()*120-60}px,${Math.random()*120-60}px)`;
+}
+</script>
+</body>
+</html>
