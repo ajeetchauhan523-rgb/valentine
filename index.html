@@ -17,45 +17,35 @@ body {
 .container {
   max-width: 420px;
   margin: auto;
-  padding: 30px 15px 80px;
+  padding: 30px 15px;
 }
 
 h1 { font-size: 2.2rem; }
 p { font-size: 1.1rem; line-height: 1.6; }
 
-/* HEART */
 .heart {
   font-size: 70px;
   animation: beat 1s infinite;
 }
-@keyframes beat { 50% { transform: scale(1.25); } }
+@keyframes beat {
+  50% { transform: scale(1.25); }
+}
 
 /* SLIDESHOW */
 .slideshow {
-  position: relative;
   height: 260px;
   margin: 20px 0;
   border-radius: 20px;
   overflow: hidden;
-  background: rgba(255,255,255,0.2);
 }
 .slideshow img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
+  object-fit: cover;
+  display: none;
 }
-.slideshow img.active { opacity: 1; }
-
-/* CARDS */
-.card {
-  margin-top: 30px;
-  background: rgba(255,255,255,0.18);
-  padding: 20px;
-  border-radius: 20px;
+.slideshow img.active {
+  display: block;
 }
 
 /* BUTTONS */
@@ -75,15 +65,12 @@ button {
 }
 .hidden { display:none; }
 
-/* TIMER HEARTBEAT */
-#timerBox {
-  animation: heartbeat 1.3s infinite;
-}
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.05); }
-  60% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+/* LETTER */
+.letter {
+  margin-top: 40px;
+  background: rgba(255,255,255,0.15);
+  padding: 20px;
+  border-radius: 20px;
 }
 
 /* CELEBRATION */
@@ -97,19 +84,13 @@ button {
   flex-direction: column;
   z-index: 10;
 }
-
-/* CONFETTI */
-.confetti {
-  position: fixed;
-  top: -10px;
-  width: 8px;
-  height: 14px;
-  background: white;
-  animation: fall 3s linear infinite;
-  z-index: 11;
-}
-@keyframes fall {
-  to { transform: translateY(110vh) rotate(360deg); }
+.hug { font-size: 90px; animation:hug 1.2s infinite; }
+.kiss { font-size: 70px; animation:kiss 1.5s infinite; }
+@keyframes hug { 50% { transform: scale(1.3); } }
+@keyframes kiss {
+  0% { opacity:0; transform: translateY(10px); }
+  50% { opacity:1; }
+  100% { opacity:0; transform: translateY(-10px); }
 }
 </style>
 </head>
@@ -121,12 +102,10 @@ button {
 </audio>
 
 <div class="container">
-
   <h1>Ajeet ❤️ Nikita</h1>
 
-  <p>Har tasveer ek kahani hai, aur har kahani mein tum ho 💖</p>
+  <p>Every picture here holds a memory I never want to forget.</p>
 
-  <!-- SLIDESHOW -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
@@ -136,91 +115,64 @@ button {
 
   <div class="heart">❤️</div>
 
-  <!-- PROPOSAL INTRO -->
-  <p>Nikita, tum meri Valentine nahi… meri aadat ho 💫</p>
+  <p>Nikita, you make my world softer, brighter, and happier.</p>
 
-  <!-- PROPOSAL SECTION (CLEAR & VISIBLE) -->
-  <div class="card">
-    <h2>Will you be my Valentine? 💖</h2>
-    <button class="yes" onclick="sayYes()">Yes 😍</button>
+  <button class="yes" onclick="showProposal()">Click here 💌</button>
+
+  <div id="proposal" class="hidden">
+    <h2>Will you be my Valentine, Nikita? 💖</h2>
+    <button class="yes" onclick="celebrate()">Yes 😍</button>
     <button class="no" onmouseover="moveNo(this)">No 🙈</button>
   </div>
 
-  <!-- TIMER -->
-  <div class="card" id="timerBox">
-    <h2>Hum Kab Se Saath Hain 💞</h2>
-    <p>17 July 2018 se lekar aaj tak</p>
-    <h3 id="timer"></h3>
-    <p id="totalDays" style="font-weight:bold;"></p>
-  </div>
-
-  <!-- LOVE LETTER -->
-  <div class="card">
-    <h2>Meri Chhoti Si Baat 💌</h2>
+  <div class="letter">
+    <h2>My Love Letter to You, Nikita 💌</h2>
     <p>
-      Shayad main perfect nahi hoon,<br>
-      par tumhare saath sab kuch perfect lagta hai.<br><br>
-      Aaj bhi, kal bhi, hamesha tum hi.<br><br>
-      — Ajeet ❤️
+      Somewhere between our laughs and long talks,<br>
+      you became my favorite part of every day.<br><br>
+
+      You make life feel warmer, calmer, and more meaningful.<br><br>
+
+      I choose you — today, tomorrow, always.<br><br>
+      <strong>Ajeet ❤️</strong>
     </p>
   </div>
-
 </div>
 
-<!-- CELEBRATION SCREEN -->
 <div id="celebration">
+  <div class="hug">🤗</div>
+  <div class="kiss">😘</div>
   <h1>She said YES!!! 🎉❤️</h1>
   <h2>Nikita, you are my Valentine 💖</h2>
   <p>Forever yours,<br><b>Ajeet</b></p>
 </div>
 
 <script>
-/* SLIDESHOW */
+// slideshow
 let slides = document.querySelectorAll(".slideshow img");
 let i = 0;
 setInterval(()=>{
   slides[i].classList.remove("active");
-  i = (i + 1) % slides.length;
+  i = (i+1)%slides.length;
   slides[i].classList.add("active");
-}, 3500);
+},3000);
 
-/* NO BUTTON RUN */
+// proposal
+function showProposal(){
+  document.getElementById("proposal").classList.remove("hidden");
+  document.getElementById("music").play();
+}
+
+// runaway no
 function moveNo(btn){
   btn.style.transform =
     `translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
 
-/* YES BUTTON */
-function sayYes(){
-  document.getElementById("music").play();
+// celebrate
+function celebrate(){
   document.getElementById("celebration").style.display="flex";
-
-  for(let i=0;i<40;i++){
-    let c = document.createElement("div");
-    c.className="confetti";
-    c.style.left = Math.random()*100+"vw";
-    c.style.background = ["#fff","#ffd1dc","#ffb3c6"][Math.floor(Math.random()*3)];
-    c.style.animationDuration = (2+Math.random()*2)+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
 }
-
-/* TIMER */
-const startDate = new Date("2018-07-17T00:00:00");
-function updateTimer(){
-  const now = new Date();
-  const diff = now - startDate;
-  const totalDays = Math.floor(diff / (1000*60*60*24));
-
-  document.getElementById("timer").innerHTML =
-    `${Math.floor(totalDays/365)} saal, ${Math.floor((totalDays%365)/30)} mahine, ${totalDays%30} din`;
-
-  document.getElementById("totalDays").innerHTML =
-    `Total days together: ${totalDays} days ❤️`;
-}
-setInterval(updateTimer,1000);
-updateTimer();
 </script>
 
 </body>
