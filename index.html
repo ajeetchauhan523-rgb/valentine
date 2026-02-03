@@ -13,13 +13,12 @@ body {
   background: linear-gradient(135deg,#ff4f7b,#ff758c);
   color: white;
   text-align: center;
-  padding-bottom: 90px; /* space for floating button */
 }
 
 .container {
   max-width: 420px;
   margin: auto;
-  padding: 30px 15px;
+  padding: 30px 15px 60px;
 }
 
 h1 { font-size: 2.2rem; }
@@ -47,6 +46,38 @@ p { font-size: 1.1rem; line-height: 1.6; }
   opacity: 1;
 }
 
+/* ===== HEART ===== */
+.heart {
+  font-size: 70px;
+  animation: beat 1s infinite;
+}
+@keyframes beat {
+  50% { transform: scale(1.25); }
+}
+
+/* ===== BUTTONS ===== */
+button {
+  padding: 14px 22px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+.yes {
+  background: white;
+  color:#ff4f7b;
+}
+
+.no {
+  background:#ffd1dc;
+  color:#b3003b;
+  position: relative;
+}
+
+.hidden { display:none; }
+
 /* ===== CARDS ===== */
 .card {
   margin-top: 30px;
@@ -66,22 +97,17 @@ p { font-size: 1.1rem; line-height: 1.6; }
   100% { transform: scale(1); }
 }
 
-/* ===== FLOATING PRINT BUTTON ===== */
+/* ===== PRINT BUTTON (FIXED & VISIBLE) ===== */
 .print-btn {
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-  max-width: 420px;
+  width: 100%;
+  margin-top: 35px;
   padding: 16px;
   background: #ffffff;
   color: #ff4f7b;
   font-weight: bold;
   border-radius: 40px;
   border: 2px solid #ffb3c6;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-  z-index: 999;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 /* ===== PRINT PAGE ===== */
@@ -95,11 +121,27 @@ p { font-size: 1.1rem; line-height: 1.6; }
   text-align: left;
 }
 
+#printPage h1 {
+  color: #ff4f7b;
+}
+
+#printPage hr {
+  border: none;
+  border-top: 2px solid #ffb3c6;
+  margin: 20px 0;
+}
+
 /* ===== PRINT MODE ===== */
 @media print {
-  body { background: white; padding: 0; }
-  .container, .print-btn { display: none !important; }
-  #printPage { display: block; }
+  body {
+    background: white;
+  }
+  .container, button {
+    display: none !important;
+  }
+  #printPage {
+    display: block;
+  }
 }
 </style>
 </head>
@@ -115,12 +157,15 @@ p { font-size: 1.1rem; line-height: 1.6; }
     aur har kahani mein tum ho 💖
   </p>
 
+  <!-- SLIDESHOW -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
     <img src="photo3.jpg">
     <img src="photo4.jpg">
   </div>
+
+  <div class="heart">❤️</div>
 
   <p>
     Nikita,<br>
@@ -151,25 +196,40 @@ p { font-size: 1.1rem; line-height: 1.6; }
     </p>
   </div>
 
+  <!-- PRINT BUTTON -->
+  <button class="print-btn" onclick="window.print()">
+    🖨️ Print Our Love Story
+  </button>
+
 </div>
 
-<!-- FLOATING BUTTON -->
-<button class="print-btn" onclick="window.print()">
-  🖨️ Print Our Love Story
-</button>
-
-<!-- PRINTABLE PAGE -->
+<!-- ===== PRINTABLE MEMORY PAGE ===== -->
 <div id="printPage">
   <h1>Ajeet ❤️ Nikita</h1>
   <p><strong>Relationship Since:</strong> 17 July 2018</p>
   <p id="printDays"></p>
+
   <hr>
+
+  <h2>Our Story 💖</h2>
   <p>
     From the day our paths crossed,<br>
-    we chose each other — every single day.<br><br>
-    This page is a memory of a love that continues forever.
+    life became kinder, warmer, and more meaningful.<br><br>
+
+    We grew together, learned together,<br>
+    and chose each other every single day.<br><br>
+
+    This page is a small reminder of a big love —
+    one that started on 17 July 2018
+    and continues forever.
   </p>
-  <p style="text-align:right;"><strong>Ajeet</strong></p>
+
+  <hr>
+
+  <p style="text-align:right;">
+    With all my love,<br>
+    <strong>Ajeet</strong>
+  </p>
 </div>
 
 <script>
@@ -184,13 +244,23 @@ setInterval(()=>{
 
 /* TIMER */
 const startDate = new Date("2018-07-17T00:00:00");
+
 function updateTimer() {
   const now = new Date();
   const diff = now - startDate;
+
   const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const years = Math.floor(totalDays / 365);
+  const months = Math.floor((totalDays % 365) / 30);
+  const days = totalDays % 30;
+
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
 
   document.getElementById("timer").innerHTML =
-    `${Math.floor(totalDays/365)} saal, ${Math.floor((totalDays%365)/30)} mahine, ${totalDays%30} din`;
+    `${years} saal, ${months} mahine, ${days} din<br>
+     ${hours} ghante, ${minutes} minute, ${seconds} seconds 💖`;
 
   document.getElementById("totalDays").innerHTML =
     `Total days together: ${totalDays} days ❤️`;
@@ -198,7 +268,8 @@ function updateTimer() {
   document.getElementById("printDays").innerHTML =
     `<strong>Total days together:</strong> ${totalDays} days ❤️`;
 }
-setInterval(updateTimer,1000);
+
+setInterval(updateTimer, 1000);
 updateTimer();
 </script>
 
