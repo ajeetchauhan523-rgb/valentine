@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== BASE ===== */
+/* ---------- GENERAL ---------- */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -18,13 +18,13 @@ body {
 .container {
   max-width: 420px;
   margin: auto;
-  padding: 30px 15px 60px;
+  padding: 30px 15px;
 }
 
 h1 { font-size: 2.2rem; }
 p { font-size: 1.1rem; line-height: 1.6; }
 
-/* ===== SLIDESHOW ===== */
+/* ---------- SLIDESHOW ---------- */
 .slideshow {
   position: relative;
   height: 260px;
@@ -46,39 +46,20 @@ p { font-size: 1.1rem; line-height: 1.6; }
   opacity: 1;
 }
 
-/* ===== HEART ===== */
-.heart {
-  font-size: 70px;
-  animation: beat 1s infinite;
-}
-@keyframes beat {
-  50% { transform: scale(1.25); }
-}
-
-/* ===== BUTTONS ===== */
+/* ---------- BUTTONS ---------- */
 button {
   padding: 14px 22px;
   border-radius: 30px;
   border: none;
   font-size: 1rem;
-  margin: 12px 0;
+  margin: 10px;
   cursor: pointer;
 }
-
-.yes {
-  background: white;
-  color:#ff4f7b;
-}
-
-.no {
-  background:#ffd1dc;
-  color:#b3003b;
-  position: relative;
-}
-
+.yes { background: white; color:#ff4f7b; }
+.no { background:#ffd1dc; color:#b3003b; position: relative; }
 .hidden { display:none; }
 
-/* ===== CARDS ===== */
+/* ---------- CARDS ---------- */
 .card {
   margin-top: 30px;
   background: rgba(255,255,255,0.18);
@@ -86,7 +67,7 @@ button {
   border-radius: 20px;
 }
 
-/* ===== HEARTBEAT TIMER ===== */
+/* ---------- HEARTBEAT ---------- */
 #timerBox {
   animation: heartbeat 1.3s infinite;
 }
@@ -97,20 +78,14 @@ button {
   100% { transform: scale(1); }
 }
 
-/* ===== PRINT BUTTON (FIXED & VISIBLE) ===== */
+/* ---------- PRINT BUTTON ---------- */
 .print-btn {
-  width: 100%;
-  margin-top: 35px;
-  padding: 16px;
-  background: #ffffff;
+  background: #fff;
   color: #ff4f7b;
   font-weight: bold;
-  border-radius: 40px;
-  border: 2px solid #ffb3c6;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
-/* ===== PRINT PAGE ===== */
+/* ---------- PRINT PAGE ---------- */
 #printPage {
   display: none;
   background: white;
@@ -118,20 +93,19 @@ button {
   padding: 40px;
   max-width: 800px;
   margin: auto;
-  text-align: left;
 }
 
 #printPage h1 {
   color: #ff4f7b;
+  margin-bottom: 10px;
 }
-
 #printPage hr {
   border: none;
   border-top: 2px solid #ffb3c6;
   margin: 20px 0;
 }
 
-/* ===== PRINT MODE ===== */
+/* ---------- PRINT STYLES ---------- */
 @media print {
   body {
     background: white;
@@ -157,15 +131,12 @@ button {
     aur har kahani mein tum ho 💖
   </p>
 
-  <!-- SLIDESHOW -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
     <img src="photo3.jpg">
     <img src="photo4.jpg">
   </div>
-
-  <div class="heart">❤️</div>
 
   <p>
     Nikita,<br>
@@ -203,7 +174,7 @@ button {
 
 </div>
 
-<!-- ===== PRINTABLE MEMORY PAGE ===== -->
+<!-- ---------- PRINTABLE MEMORY PAGE ---------- -->
 <div id="printPage">
   <h1>Ajeet ❤️ Nikita</h1>
   <p><strong>Relationship Since:</strong> 17 July 2018</p>
@@ -233,16 +204,16 @@ button {
 </div>
 
 <script>
-/* SLIDESHOW */
+/* ---------- SLIDESHOW ---------- */
 let slides = document.querySelectorAll(".slideshow img");
-let i = 0;
+let current = 0;
 setInterval(()=>{
-  slides[i].classList.remove("active");
-  i = (i + 1) % slides.length;
-  slides[i].classList.add("active");
+  slides[current].classList.remove("active");
+  current = (current + 1) % slides.length;
+  slides[current].classList.add("active");
 }, 3500);
 
-/* TIMER */
+/* ---------- TIMER ---------- */
 const startDate = new Date("2018-07-17T00:00:00");
 
 function updateTimer() {
@@ -260,7 +231,7 @@ function updateTimer() {
 
   document.getElementById("timer").innerHTML =
     `${years} saal, ${months} mahine, ${days} din<br>
-     ${hours} ghante, ${minutes} minute, ${seconds} seconds 💖`;
+     ${hours} ghante, ${minutes} minute, ${seconds} seconds`;
 
   document.getElementById("totalDays").innerHTML =
     `Total days together: ${totalDays} days ❤️`;
@@ -268,7 +239,6 @@ function updateTimer() {
   document.getElementById("printDays").innerHTML =
     `<strong>Total days together:</strong> ${totalDays} days ❤️`;
 }
-
 setInterval(updateTimer, 1000);
 updateTimer();
 </script>
