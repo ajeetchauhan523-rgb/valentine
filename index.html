@@ -37,30 +37,26 @@ p { font-size: 1.1rem; line-height: 1.6; }
   100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
 }
 
-/* 💙 Typing Text Effects */
+/* ❄️ Heart Snowfall */
+.snow-heart {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  opacity: 0.85;
+  animation: snowFall linear infinite;
+  z-index: 2;
+}
+@keyframes snowFall {
+  0% { transform: translateY(0) translateX(0); opacity: 1; }
+  100% { transform: translateY(110vh) translateX(50px); opacity: 0; }
+}
+
+/* Typing Text */
 #typingText {
   font-size: 1.5rem;
   font-weight: bold;
   margin-top: 15px;
-  color: #ffffff;
   text-shadow: 0 0 12px rgba(255,255,255,0.9);
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-}
-
-/* Cursor Blink */
-#typingText::after {
-  content: "|";
-  animation: blink 0.8s infinite;
-  margin-left: 4px;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
 }
 
 /* ❤️ Heart Beat */
@@ -90,11 +86,9 @@ p { font-size: 1.1rem; line-height: 1.6; }
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
-.slideshow img.active {
-  opacity: 1;
-}
+.slideshow img.active { opacity: 1; }
 
-/* 🎯 Buttons */
+/* Buttons */
 button {
   padding: 14px 22px;
   border-radius: 30px;
@@ -104,11 +98,7 @@ button {
   cursor: pointer;
 }
 .yes { background: white; color:#0077ff; }
-.no {
-  background:#ffd1dc;
-  color:#b3003b;
-  position: relative;
-}
+.no { background:#ffd1dc; color:#b3003b; position: relative; }
 .hidden { display:none; }
 
 /* 💌 Cards */
@@ -119,16 +109,61 @@ button {
   border-radius: 20px;
 }
 
+/* 💞 Glowing Floating Timer */
+#timerBox {
+  animation: floatTimer 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+@keyframes floatTimer {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+#timer {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 12px #00aaff, 0 0 20px #ffffff;
+}
+
 /* 🎉 Celebration */
 #celebration {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg,#6dd5fa,#b2fefa);
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(12px);
   display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   z-index: 10;
+}
+
+/* 🌟 Forever Glowing Text */
+#foreverText {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 15px 0;
+  text-shadow:
+    0 0 10px #ff4f7b,
+    0 0 20px #ff0000,
+    0 0 30px #00aaff;
+  animation: glowPulse 1.5s infinite alternate;
+}
+@keyframes glowPulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.1); opacity: 1; }
+}
+
+/* 💋 Kiss Animation */
+#kissAnim {
+  font-size: 90px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 1s ease;
+}
+#kissAnim.show {
+  opacity: 1;
+  transform: scale(1.4);
 }
 
 /* 🎆 Fireworks Canvas */
@@ -143,7 +178,7 @@ button {
 
 <body>
 
-<!-- ❤️ Floating Hearts -->
+<!-- Floating Hearts -->
 <div class="floating-hearts">
   <span style="left:10%">💙</span>
   <span style="left:30%">❤️</span>
@@ -152,6 +187,7 @@ button {
   <span style="left:90%">💙</span>
 </div>
 
+<!-- Background Music -->
 <audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -160,12 +196,9 @@ button {
 
   <h1>Ajeet ❤️ Nikita</h1>
 
-  <!-- Typing Text -->
   <h2 id="typingText"></h2>
 
-  <p>
-    Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖
-  </p>
+  <p>Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖</p>
 
   <!-- Slideshow -->
   <div class="slideshow">
@@ -177,11 +210,6 @@ button {
 
   <div class="heart">💙</div>
 
-  <p>
-    Tum meri Valentine nahi,<br>
-    tum meri duniya ho 🌍💖
-  </p>
-
   <button class="yes" onclick="showProposal()">Click here 💌</button>
 
   <div id="proposal" class="hidden">
@@ -191,21 +219,20 @@ button {
   </div>
 
   <!-- Timer -->
-  <div class="card">
+  <div class="card" id="timerBox">
     <h2>Hum Kab Se Saath Hain 💞</h2>
-    <p>17 July 2018 se lekar aaj tak…</p>
     <h3 id="timer"></h3>
-    <p id="totalDays" style="font-weight:bold;"></p>
+    <p id="totalDays"></p>
   </div>
 
   <!-- Love Letter -->
   <div class="card">
     <h2>My Love for You 💌</h2>
     <p>
-      Nikita,<br><br>
-      Tumhari smile meri strength hai 💙<br><br>
-      Main tumhe har janam choose karunga ❤️<br><br>
-      — Ajeet 💖
+      बेहतर नहीं बेहतरीन हो तुम,<br>
+      मेरे दिल के बहुत करीब हो तुम ❤️<br><br>
+      Tum meri khushi ho Nikita 💖<br><br>
+      — Ajeet 💙
     </p>
   </div>
 
@@ -214,18 +241,20 @@ button {
 <!-- Celebration -->
 <div id="celebration">
   <h1>She said YES!!! 🎉💙</h1>
-  <h2>Nikita, you are my forever Valentine 💖</h2>
-  <p>Forever yours,<br><b>Ajeet</b></p>
+
+  <h2 id="foreverText">Nikita ❤️ Ajeet Forever</h2>
+
+  <div id="kissAnim">😘💋</div>
+
+  <p style="font-size:1.4rem;">I love you Nikita 💙</p>
 </div>
 
-<!-- Fireworks Canvas -->
 <canvas id="fireworks"></canvas>
 
 <script>
 /* Typing Animation */
 const text = "I love you Nikita 💙";
 let index = 0;
-
 function typeEffect(){
   if(index < text.length){
     document.getElementById("typingText").innerHTML += text.charAt(index);
@@ -235,19 +264,23 @@ function typeEffect(){
 }
 typeEffect();
 
-/* Slideshow */
-let slides = document.querySelectorAll(".slideshow img");
-let current = 0;
-setInterval(()=>{
-  slides[current].classList.remove("active");
-  current = (current + 1) % slides.length;
-  slides[current].classList.add("active");
-}, 3500);
+/* ❄️ Heart Snowfall Generator */
+function createSnowHeart(){
+  const heart = document.createElement("div");
+  heart.classList.add("snow-heart");
+  heart.innerHTML = ["💙","💖","💕","❤️"][Math.floor(Math.random()*4)];
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.animationDuration = (4 + Math.random()*3) + "s";
+  heart.style.fontSize = (16 + Math.random()*15) + "px";
+  document.body.appendChild(heart);
+
+  setTimeout(()=>heart.remove(),7000);
+}
+setInterval(createSnowHeart,400);
 
 /* Proposal */
 function showProposal(){
   document.getElementById("proposal").classList.remove("hidden");
-  document.getElementById("music").play();
 }
 
 /* Runaway No */
@@ -258,58 +291,74 @@ function moveNo(btn){
 
 /* Timer */
 const startDate = new Date("2018-07-17T00:00:00");
-function updateTimer() {
+function updateTimer(){
   const now = new Date();
   const diff = now - startDate;
-  const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const totalDays = Math.floor(diff/(1000*60*60*24));
 
   document.getElementById("timer").innerHTML =
-    `${totalDays} beautiful days together 💙`;
+    `${totalDays} Days Together 💙`;
 
   document.getElementById("totalDays").innerHTML =
-    `Total days together: ${totalDays} days ❤️`;
+    `Since 17 July 2018 ❤️`;
 }
-setInterval(updateTimer, 1000);
+setInterval(updateTimer,1000);
 updateTimer();
 
-/* Fireworks */
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+/* ❤️ Heart Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-let particles = [];
+let particles=[];
+const colors=["#ff4f7b","#ff0000","#00aaff"];
 
 function startFireworks(){
   setInterval(()=>{
-    for(let i=0;i<60;i++){
+    for(let i=0;i<50;i++){
       particles.push({
-        x: canvas.width/2,
-        y: canvas.height/2,
-        vx: (Math.random()-0.5)*8,
-        vy: (Math.random()-0.5)*8,
-        alpha: 1
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height/2,
+        vx:(Math.random()-0.5)*8,
+        vy:(Math.random()-0.5)*8,
+        alpha:1,
+        color:colors[Math.floor(Math.random()*colors.length)]
       });
     }
-  }, 800);
+  },900);
+}
+
+function hexToRgb(hex){
+  let c=hex.replace("#","");
+  let bigint=parseInt(c,16);
+  return `${(bigint>>16)&255},${(bigint>>8)&255},${bigint&255}`;
+}
+
+function drawHeart(x,y,size,color,alpha){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(size,size);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-10,-10,-25,5,0,25);
+  ctx.bezierCurveTo(25,5,10,-10,0,0);
+  ctx.fillStyle=`rgba(${hexToRgb(color)},${alpha})`;
+  ctx.fill();
+  ctx.restore();
 }
 
 function animateFireworks(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   particles.forEach((p,index)=>{
-    p.x += p.vx;
-    p.y += p.vy;
-    p.alpha -= 0.02;
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.alpha-=0.02;
 
-    ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,3,0,Math.PI*2);
-    ctx.fill();
+    drawHeart(p.x,p.y,0.15,p.color,p.alpha);
 
-    if(p.alpha <= 0){
-      particles.splice(index,1);
-    }
+    if(p.alpha<=0) particles.splice(index,1);
   });
 
   requestAnimationFrame(animateFireworks);
@@ -319,6 +368,11 @@ animateFireworks();
 /* Celebration */
 function celebrate(){
   document.getElementById("celebration").style.display="flex";
+
+  document.getElementById("kissAnim").classList.add("show");
+
+  document.getElementById("music").play();
+
   startFireworks();
 }
 </script>
