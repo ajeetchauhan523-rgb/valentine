@@ -6,178 +6,201 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:black;
-  color:white;
-  text-align:center;
-  overflow-x:hidden;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: black;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
 }
 
-/* 🌌 Background (synced with slideshow) */
-#bgSlideshow{
-  position:fixed;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  filter:blur(8px);
-  opacity:0.55;
-  z-index:-2;
-  animation:zoomBg 6s ease-in-out infinite alternate;
-  transition:background-image 1.5s ease-in-out;
-}
-@keyframes zoomBg{
-  from{transform:scale(1)}
-  to{transform:scale(1.08)}
-}
-#bgOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  z-index:-1;
+/* 🌌 Background Slideshow (50% Blur + Zoom) */
+#bgSlideshow {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  opacity: 0.55;
+  z-index: -2;
+  transition: background-image 2s ease-in-out;
+  animation: zoomBg 6s ease-in-out infinite alternate;
 }
 
-.container{
-  max-width:420px;
-  margin:auto;
-  padding:30px 15px;
+@keyframes zoomBg {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
-h1{font-size:2.2rem}
-p{font-size:1.1rem}
-
-/* ❤️ Floating hearts */
-.floating-hearts span{
-  position:fixed;
-  bottom:-20px;
-  font-size:25px;
-  animation:floatUp 6s linear infinite;
-  opacity:.7;
-}
-@keyframes floatUp{
-  to{transform:translateY(-110vh) scale(1.5);opacity:0}
+#bgOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: -1;
 }
 
-/* ❄️ Heart snowfall */
-.snow-heart{
-  position:fixed;
-  top:-20px;
-  font-size:18px;
-  animation:snowFall linear infinite;
-  opacity:.85;
-}
-@keyframes snowFall{
-  to{transform:translateY(110vh) translateX(50px);opacity:0}
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 30px 15px;
 }
 
-/* ❤️ Heart beat */
-.heart{
-  font-size:70px;
-  animation:beat 1s infinite;
-}
-@keyframes beat{50%{transform:scale(1.25)}}
+h1 { font-size: 2.2rem; }
 
-/* 📸 Slideshow */
-.slideshow{
-  position:relative;
-  height:260px;
-  border-radius:20px;
-  overflow:hidden;
-  background:rgba(255,255,255,.25);
+/* ❤️ Floating Hearts */
+.floating-hearts span {
+  position: fixed;
+  bottom: -20px;
+  font-size: 25px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
 }
-.slideshow img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  opacity:0;
-  transition:opacity 1s ease-in-out;
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
 }
-.slideshow img.active{opacity:1}
+
+/* ❄️ Heart Snowfall */
+.snow-heart {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  opacity: 0.85;
+  animation: snowFall linear infinite;
+  z-index: 2;
+}
+@keyframes snowFall {
+  0% { transform: translateY(0) translateX(0); opacity: 1; }
+  100% { transform: translateY(110vh) translateX(50px); opacity: 0; }
+}
+
+/* ❤️ Heart Beat */
+.heart {
+  font-size: 70px;
+  animation: beat 1s infinite;
+}
+@keyframes beat {
+  50% { transform: scale(1.25); }
+}
+
+/* 📸 Main Slideshow */
+.slideshow {
+  position: relative;
+  height: 260px;
+  margin: 20px 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.25);
+}
+.slideshow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slideshow img.active { opacity: 1; }
 
 /* Buttons */
-button{
-  padding:14px 22px;
-  border-radius:30px;
-  border:none;
-  font-size:1rem;
-  margin:10px;
-  cursor:pointer;
+button {
+  padding: 14px 22px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  margin: 10px;
+  cursor: pointer;
 }
-.yes{background:white;color:#0077ff}
-.no{background:#ffd1dc;color:#b3003b;position:relative}
-.hidden{display:none}
+.yes { background: white; color:#0077ff; }
+.no { background:#ffd1dc; color:#b3003b; position: relative; }
+.hidden { display:none; }
 
 /* Cards */
-.card{
-  margin-top:30px;
-  background:rgba(255,255,255,.2);
-  padding:20px;
-  border-radius:20px;
+.card {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.20);
+  padding: 20px;
+  border-radius: 20px;
 }
 
-/* 💞 Timer glow + heartbeat */
-#timerBox{
-  animation:floatTimer 2s infinite alternate,heartbeat 1.5s infinite;
-  box-shadow:0 0 25px rgba(255,255,255,.7);
+/* 💞 Timer Glow + Heartbeat */
+#timerBox {
+  animation: floatTimer 2s ease-in-out infinite alternate,
+             heartbeat 1.5s infinite;
+  box-shadow: 0 0 25px rgba(255,255,255,0.7);
 }
-@keyframes floatTimer{to{transform:translateY(-12px)}}
-@keyframes heartbeat{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.07)}
-  100%{transform:scale(1)}
+@keyframes floatTimer {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
 }
-#timer{
-  font-weight:bold;
-  text-shadow:0 0 12px #00aaff,0 0 25px white;
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
-#totalDaysLine{
-  margin-top:10px;
-  font-weight:bold;
-  text-shadow:0 0 15px #ff4f7b;
+
+#timer {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-shadow: 0 0 12px #00aaff, 0 0 25px white;
+}
+
+#totalDaysLine {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 15px #ff4f7b;
 }
 
 /* 🎉 Celebration */
-#celebration{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(12px);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  z-index:10;
+#celebration {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(12px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 10;
 }
 
-/* 🌟 Forever text */
-#foreverText{
-  font-size:2rem;
-  text-shadow:0 0 10px #ff4f7b,0 0 20px #ff0000,0 0 30px #00aaff;
-  animation:glow 1.5s infinite alternate;
+#foreverText {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 15px 0;
+  text-shadow:
+    0 0 10px #ff4f7b,
+    0 0 20px #ff0000,
+    0 0 30px #00aaff;
+  animation: glowPulse 1.5s infinite alternate;
 }
-@keyframes glow{to{transform:scale(1.1)}}
+@keyframes glowPulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.1); opacity: 1; }
+}
 
-/* 💋 Kiss */
-#kissAnim{
-  font-size:90px;
-  opacity:0;
-  transform:scale(.5);
-  transition:1s;
+#kissAnim {
+  font-size: 90px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 1s ease;
 }
-#kissAnim.show{
-  opacity:1;
-  transform:scale(1.4);
+#kissAnim.show {
+  opacity: 1;
+  transform: scale(1.4);
 }
 
 /* Fireworks */
-#fireworks{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:9;
+#fireworks {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
 }
 </style>
 </head>
@@ -200,9 +223,12 @@ button{
 </audio>
 
 <div class="container">
-  <h1>Ajeet ❤️ Nikita</h1>
-  <h2 id="typingText"></h2>
 
+  <h1>Ajeet ❤️ Nikita</h1>
+
+  <p>Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖</p>
+
+  <!-- Main Slideshow -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
@@ -215,118 +241,187 @@ button{
   <button class="yes" onclick="showProposal()">Click here 💌</button>
 
   <div id="proposal" class="hidden">
-    <h2>Will you be my Valentine forever? 💙</h2>
+    <h2>Nikita, Will you be my Valentine forever? 💙</h2>
     <button class="yes" onclick="celebrate()">Yes 😍</button>
     <button class="no" onmouseover="moveNo(this)">No 🙈</button>
   </div>
 
+  <!-- Timer -->
   <div class="card" id="timerBox">
     <h2>Hum Kab Se Saath Hain 💞</h2>
     <h3 id="timer"></h3>
     <div id="totalDaysLine"></div>
   </div>
+
+  <!-- Love Letter -->
+  <div class="card">
+    <h2>My Love for You 💌</h2>
+    <p>
+      बेहतर नहीं बेहतरीन हो तुम,<br>
+      मेरे दिल के बहुत करीब हो तुम ❤️<br><br>
+      Tum meri khushi ho Nikita 💖<br><br>
+      — Ajeet 💙
+    </p>
+  </div>
+
 </div>
 
+<!-- Celebration -->
 <div id="celebration">
   <h1>She said YES!!! 🎉💙</h1>
   <h2 id="foreverText">Nikita ❤️ Ajeet Forever</h2>
   <div id="kissAnim">😘💋</div>
+  <p style="font-size:1.4rem;">I love you Nikita 💙</p>
 </div>
 
 <canvas id="fireworks"></canvas>
 
 <script>
-/* Typing */
-const text="I love you Nikita 💙";
-let t=0;
-(function type(){
-  if(t<text.length){
-    typingText.innerHTML+=text[t++];
-    setTimeout(type,120);
-  }
-})();
-
-/* Snowfall */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="snow-heart";
-  h.innerHTML=["💙","💖","💕","❤️"][Math.random()*4|0];
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=4+Math.random()*3+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),7000);
-},400);
-
-/* 🔁 Slideshow + Background SYNC */
-const slides=document.querySelectorAll(".slideshow img");
-const bg=document.getElementById("bgSlideshow");
-let i=0;
-
-function syncSlide(){
-  slides.forEach(s=>s.classList.remove("active"));
-  slides[i].classList.add("active");
-  bg.style.backgroundImage=`url('${slides[i].src}')`;
-  i=(i+1)%slides.length;
+/* ❄️ Heart Snowfall */
+function createSnowHeart(){
+  const heart = document.createElement("div");
+  heart.classList.add("snow-heart");
+  heart.innerHTML = ["💙","💖","💕","❤️"][Math.floor(Math.random()*4)];
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.animationDuration = (4 + Math.random()*3) + "s";
+  heart.style.fontSize = (16 + Math.random()*15) + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),7000);
 }
-syncSlide();
-setInterval(syncSlide,4000);
+setInterval(createSnowHeart,400);
 
 /* Proposal */
 function showProposal(){
-  proposal.classList.remove("hidden");
+  document.getElementById("proposal").classList.remove("hidden");
 }
 
 /* Runaway No */
 function moveNo(btn){
-  btn.style.transform=`translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
+  btn.style.transform =
+    `translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
 
 /* 💞 Timer */
-const start=new Date("2018-07-17T00:00:00");
-setInterval(()=>{
-  const now=new Date();
-  let y=now.getFullYear()-start.getFullYear();
-  let m=now.getMonth()-start.getMonth();
-  let d=now.getDate()-start.getDate();
-  if(d<0){m--;d+=new Date(now.getFullYear(),now.getMonth(),0).getDate()}
-  if(m<0){y--;m+=12}
+const startDate = new Date("2018-07-17T00:00:00");
+function updateTimer(){
+  const now = new Date();
 
-  const diff=now-start;
-  const days=Math.floor(diff/86400000);
-  const h=Math.floor(diff/3600000)%24;
-  const min=Math.floor(diff/60000)%60;
-  const s=Math.floor(diff/1000)%60;
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
 
-  timer.innerHTML=`${y}Y ${m}M ${d}D<br>${h}H ${min}M ${s}S 💙`;
-  totalDaysLine.innerHTML=`Total Days Together ❤️ ${days}`;
-},1000);
+  if(days < 0){
+    months--;
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+  }
+  if(months < 0){
+    years--;
+    months += 12;
+  }
 
-/* Fireworks */
-const c=fireworks.getContext("2d");
-fireworks.width=innerWidth;
-fireworks.height=innerHeight;
-let p=[];
-function boom(){
-  for(let i=0;i<50;i++)
-    p.push({x:Math.random()*innerWidth,y:innerHeight/2,vx:(Math.random()-.5)*8,vy:(Math.random()-.5)*8,a:1});
+  const diff = now - startDate;
+  const totalDays = Math.floor(diff/(1000*60*60*24));
+
+  const totalSeconds = Math.floor(diff/1000);
+  const hours = Math.floor(totalSeconds/3600) % 24;
+  const minutes = Math.floor(totalSeconds/60) % 60;
+  const seconds = totalSeconds % 60;
+
+  document.getElementById("timer").innerHTML =
+    `${years} Years, ${months} Months, ${days} Days<br>
+     ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds 💙`;
+
+  document.getElementById("totalDaysLine").innerHTML =
+    `Total Days Together ❤️: ${totalDays}`;
 }
-setInterval(boom,900);
-(function draw(){
-  c.clearRect(0,0,innerWidth,innerHeight);
-  p.forEach((o,i)=>{
-    o.x+=o.vx;o.y+=o.vy;o.a-=.02;
-    c.fillStyle=`rgba(255,105,180,${o.a})`;
-    c.beginPath();c.arc(o.x,o.y,3,0,6.28);c.fill();
-    if(o.a<=0)p.splice(i,1);
+setInterval(updateTimer,1000);
+updateTimer();
+
+/* 🌌 Synced Background + Main Slideshow */
+const photos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
+let currentIndex = 0;
+
+const bgDiv = document.getElementById("bgSlideshow");
+const mainSlides = document.querySelectorAll(".slideshow img");
+
+function changePhoto(){
+  // Background change
+  bgDiv.style.backgroundImage = `url('${photos[currentIndex]}')`;
+
+  // Foreground slideshow change
+  mainSlides.forEach(img => img.classList.remove("active"));
+  mainSlides[currentIndex].classList.add("active");
+
+  currentIndex = (currentIndex + 1) % photos.length;
+}
+
+setInterval(changePhoto,4000);
+changePhoto();
+
+/* ❤️ Heart Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+const colors=["#ff4f7b","#ff0000","#00aaff"];
+
+function startFireworks(){
+  setInterval(()=>{
+    for(let i=0;i<50;i++){
+      particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height/2,
+        vx:(Math.random()-0.5)*8,
+        vy:(Math.random()-0.5)*8,
+        alpha:1,
+        color:colors[Math.floor(Math.random()*colors.length)]
+      });
+    }
+  },900);
+}
+
+function hexToRgb(hex){
+  let c=hex.replace("#","");
+  let bigint=parseInt(c,16);
+  return `${(bigint>>16)&255},${(bigint>>8)&255},${bigint&255}`;
+}
+
+function drawHeart(x,y,size,color,alpha){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(size,size);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-10,-10,-25,5,0,25);
+  ctx.bezierCurveTo(25,5,10,-10,0,0);
+  ctx.fillStyle=`rgba(${hexToRgb(color)},${alpha})`;
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateFireworks(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach((p,index)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.alpha-=0.02;
+    drawHeart(p.x,p.y,0.15,p.color,p.alpha);
+    if(p.alpha<=0) particles.splice(index,1);
   });
-  requestAnimationFrame(draw);
-})();
+
+  requestAnimationFrame(animateFireworks);
+}
+animateFireworks();
 
 /* Celebration */
 function celebrate(){
-  celebration.style.display="flex";
-  kissAnim.classList.add("show");
-  music.play();
+  document.getElementById("celebration").style.display="flex";
+  document.getElementById("kissAnim").classList.add("show");
+  document.getElementById("music").play();
+  startFireworks();
 }
 </script>
 
