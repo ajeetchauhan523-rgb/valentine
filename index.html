@@ -15,7 +15,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌌 Blurred Background Slideshow (50% Blur + Zoom Effect) */
+/* 🌌 Background Slideshow (50% Blur + Zoom) */
 #bgSlideshow {
   position: fixed;
   inset: 0;
@@ -28,13 +28,11 @@ body {
   animation: zoomBg 6s ease-in-out infinite alternate;
 }
 
-/* Zoom Animation */
 @keyframes zoomBg {
   from { transform: scale(1); }
   to { transform: scale(1.08); }
 }
 
-/* Dark Overlay */
 #bgOverlay {
   position: fixed;
   inset: 0;
@@ -49,7 +47,6 @@ body {
 }
 
 h1 { font-size: 2.2rem; }
-p { font-size: 1.1rem; line-height: 1.6; }
 
 /* ❤️ Floating Hearts */
 .floating-hearts span {
@@ -78,14 +75,6 @@ p { font-size: 1.1rem; line-height: 1.6; }
   100% { transform: translateY(110vh) translateX(50px); opacity: 0; }
 }
 
-/* Typing Text */
-#typingText {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 15px;
-  text-shadow: 0 0 12px rgba(255,255,255,0.9);
-}
-
 /* ❤️ Heart Beat */
 .heart {
   font-size: 70px;
@@ -95,7 +84,7 @@ p { font-size: 1.1rem; line-height: 1.6; }
   50% { transform: scale(1.25); }
 }
 
-/* 📸 Slideshow */
+/* 📸 Main Slideshow */
 .slideshow {
   position: relative;
   height: 260px;
@@ -128,7 +117,7 @@ button {
 .no { background:#ffd1dc; color:#b3003b; position: relative; }
 .hidden { display:none; }
 
-/* 💌 Cards */
+/* Cards */
 .card {
   margin-top: 30px;
   background: rgba(255,255,255,0.20);
@@ -136,7 +125,7 @@ button {
   border-radius: 20px;
 }
 
-/* 💞 Timer Glow + Heartbeat Pulse */
+/* 💞 Timer Glow + Heartbeat */
 #timerBox {
   animation: floatTimer 2s ease-in-out infinite alternate,
              heartbeat 1.5s infinite;
@@ -161,10 +150,10 @@ button {
 }
 
 #totalDaysLine {
+  margin-top: 10px;
   font-size: 1.2rem;
   font-weight: bold;
-  margin-top: 12px;
-  text-shadow: 0 0 15px #ff4f7b, 0 0 25px white;
+  text-shadow: 0 0 15px #ff4f7b;
 }
 
 /* 🎉 Celebration */
@@ -180,7 +169,6 @@ button {
   z-index: 10;
 }
 
-/* 🌟 Forever Glowing Text */
 #foreverText {
   font-size: 2rem;
   font-weight: bold;
@@ -196,7 +184,6 @@ button {
   to { transform: scale(1.1); opacity: 1; }
 }
 
-/* 💋 Kiss Animation */
 #kissAnim {
   font-size: 90px;
   opacity: 0;
@@ -208,7 +195,7 @@ button {
   transform: scale(1.4);
 }
 
-/* 🎆 Fireworks Canvas */
+/* Fireworks */
 #fireworks {
   position: fixed;
   inset: 0;
@@ -220,11 +207,9 @@ button {
 
 <body>
 
-<!-- 🌌 Background Slideshow -->
 <div id="bgSlideshow"></div>
 <div id="bgOverlay"></div>
 
-<!-- Floating Hearts -->
 <div class="floating-hearts">
   <span style="left:10%">💙</span>
   <span style="left:30%">❤️</span>
@@ -233,7 +218,6 @@ button {
   <span style="left:90%">💙</span>
 </div>
 
-<!-- Background Music -->
 <audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -241,11 +225,10 @@ button {
 <div class="container">
 
   <h1>Ajeet ❤️ Nikita</h1>
-  <h2 id="typingText"></h2>
 
   <p>Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖</p>
 
-  <!-- Slideshow -->
+  <!-- Main Slideshow -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
@@ -294,18 +277,6 @@ button {
 <canvas id="fireworks"></canvas>
 
 <script>
-/* Typing Animation */
-const text = "I love you Nikita 💙";
-let index = 0;
-function typeEffect(){
-  if(index < text.length){
-    document.getElementById("typingText").innerHTML += text.charAt(index);
-    index++;
-    setTimeout(typeEffect, 120);
-  }
-}
-typeEffect();
-
 /* ❄️ Heart Snowfall */
 function createSnowHeart(){
   const heart = document.createElement("div");
@@ -366,23 +337,33 @@ function updateTimer(){
 setInterval(updateTimer,1000);
 updateTimer();
 
-/* 🌌 Background Photo Slideshow */
-const bgPhotos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
-let bgIndex = 0;
-const bgDiv = document.getElementById("bgSlideshow");
+/* 🌌 Synced Background + Main Slideshow */
+const photos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
+let currentIndex = 0;
 
-function changeBackground(){
-  bgDiv.style.backgroundImage = `url('${bgPhotos[bgIndex]}')`;
-  bgIndex = (bgIndex + 1) % bgPhotos.length;
+const bgDiv = document.getElementById("bgSlideshow");
+const mainSlides = document.querySelectorAll(".slideshow img");
+
+function changePhoto(){
+  // Background change
+  bgDiv.style.backgroundImage = `url('${photos[currentIndex]}')`;
+
+  // Foreground slideshow change
+  mainSlides.forEach(img => img.classList.remove("active"));
+  mainSlides[currentIndex].classList.add("active");
+
+  currentIndex = (currentIndex + 1) % photos.length;
 }
-setInterval(changeBackground,4000);
-changeBackground();
+
+setInterval(changePhoto,4000);
+changePhoto();
 
 /* ❤️ Heart Fireworks */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
+
 let particles=[];
 const colors=["#ff4f7b","#ff0000","#00aaff"];
 
@@ -422,6 +403,7 @@ function drawHeart(x,y,size,color,alpha){
 
 function animateFireworks(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+
   particles.forEach((p,index)=>{
     p.x+=p.vx;
     p.y+=p.vy;
@@ -429,6 +411,7 @@ function animateFireworks(){
     drawHeart(p.x,p.y,0.15,p.color,p.alpha);
     if(p.alpha<=0) particles.splice(index,1);
   });
+
   requestAnimationFrame(animateFireworks);
 }
 animateFireworks();
