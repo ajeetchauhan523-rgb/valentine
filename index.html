@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* 📱 Perfect Mobile Scaling */
 * { box-sizing: border-box; }
 
 body {
@@ -17,7 +18,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌸 Soft Blur Background */
+/* 🌸 Soft Blur Background Layer */
 body::before {
   content: "";
   position: fixed;
@@ -29,28 +30,36 @@ body::before {
 }
 
 .container {
+  width: 100%;
   max-width: 420px;
   margin: auto;
   padding: 30px 15px;
 }
 
-h1 { font-size: 2.2rem; }
-p { font-size: 1.1rem; line-height: 1.6; }
+h1 {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
 
-/* Floating Hearts */
+p {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  line-height: 1.6;
+}
+
+/* ❤️ Floating Hearts */
 .floating-hearts span {
   position: fixed;
   bottom: -20px;
   font-size: 25px;
   animation: floatUp 6s linear infinite;
   opacity: 0.7;
+  z-index: 1;
 }
 @keyframes floatUp {
   0% { transform: translateY(0) scale(1); opacity: 1; }
   100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
 }
 
-/* Heart Snowfall */
+/* ❄️ Heart Snowfall */
 .snow-heart {
   position: fixed;
   top: -20px;
@@ -64,7 +73,7 @@ p { font-size: 1.1rem; line-height: 1.6; }
   100% { transform: translateY(110vh) translateX(40px); opacity: 0; }
 }
 
-/* Heart Beat */
+/* ❤️ Heart Beat */
 .heart {
   font-size: 70px;
   animation: beat 1s infinite;
@@ -73,7 +82,7 @@ p { font-size: 1.1rem; line-height: 1.6; }
   50% { transform: scale(1.25); }
 }
 
-/* Slideshow */
+/* 📸 Slideshow */
 .slideshow {
   position: relative;
   height: 240px;
@@ -93,7 +102,11 @@ p { font-size: 1.1rem; line-height: 1.6; }
 }
 .slideshow img.active { opacity: 1; }
 
-/* Buttons */
+@media(max-width:400px){
+  .slideshow { height: 200px; }
+}
+
+/* 🎯 Buttons */
 button {
   width: 85%;
   max-width: 280px;
@@ -104,19 +117,15 @@ button {
   margin: 10px;
   cursor: pointer;
 }
-
 .yes { background: white; color:#0077ff; }
-.no { background:#ffd1dc; color:#b3003b; position: relative; }
-
-.voiceBtn {
-  background: #ff4f7b;
-  color: white;
-  font-weight: bold;
+.no {
+  background:#ffd1dc;
+  color:#b3003b;
+  position: relative;
 }
-
 .hidden { display:none; }
 
-/* Cards */
+/* 💌 Cards */
 .card {
   margin-top: 30px;
   background: rgba(255,255,255,0.20);
@@ -124,7 +133,7 @@ button {
   border-radius: 20px;
 }
 
-/* Celebration */
+/* 🎉 Celebration */
 #celebration {
   position: fixed;
   inset: 0;
@@ -137,7 +146,7 @@ button {
   z-index: 10;
 }
 
-/* Glowing Forever Text */
+/* 🌟 Glowing Forever Text */
 #foreverText {
   font-size: 2rem;
   font-weight: bold;
@@ -152,7 +161,7 @@ button {
   to { transform: scale(1.08); opacity: 1; }
 }
 
-/* Kiss Animation */
+/* 💋 Kiss Animation */
 #kissAnim {
   font-size: 90px;
   opacity: 0;
@@ -171,7 +180,7 @@ button {
   text-shadow: 0 0 12px rgba(255,255,255,0.9);
 }
 
-/* Fireworks */
+/* 🎆 Fireworks */
 #fireworks {
   position: fixed;
   inset: 0;
@@ -183,7 +192,7 @@ button {
 
 <body>
 
-<!-- Floating Hearts -->
+<!-- ❤️ Floating Hearts -->
 <div class="floating-hearts">
   <span style="left:10%">💙</span>
   <span style="left:30%">❤️</span>
@@ -192,7 +201,7 @@ button {
   <span style="left:90%">💙</span>
 </div>
 
-<!-- Background Music -->
+<!-- 🎶 Background Music -->
 <audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -201,11 +210,6 @@ button {
   <h1>Ajeet ❤️ Nikita</h1>
 
   <p>Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖</p>
-
-  <!-- Voice Button -->
-  <button class="voiceBtn" onclick="speakLove()">
-    🔊 Happy Valentine Nikita
-  </button>
 
   <!-- Slideshow -->
   <div class="slideshow">
@@ -217,6 +221,8 @@ button {
 
   <div class="heart">💙</div>
 
+  <p>Tum meri Valentine nahi, tum meri duniya ho 🌍💖</p>
+
   <button class="yes" onclick="showProposal()">Click here 💌</button>
 
   <div id="proposal" class="hidden">
@@ -224,30 +230,42 @@ button {
     <button class="yes" onclick="celebrate()">Yes 😍</button>
     <button class="no" onmouseover="moveNo(this)">No 🙈</button>
   </div>
+
+  <!-- Timer -->
+  <div class="card">
+    <h2>Hum Kab Se Saath Hain 💞</h2>
+    <h3 id="timer"></h3>
+    <p id="totalDays"></p>
+  </div>
+
+  <!-- Shayari -->
+  <div class="card">
+    <h2>Meri Mohabbat 💌</h2>
+    <p>
+      बेहतर नहीं बेहतरीन हो तुम,<br>
+      मेरे दिल के बहुत करीब हो तुम ❤️<br><br>
+      Tumhari muskurahat meri roshni hai,<br>
+      aur tum meri zindagi ka sabse khoobsurat ehsaas ho 💙<br><br>
+      — Ajeet 💖
+    </p>
+  </div>
 </div>
 
 <!-- Celebration -->
 <div id="celebration">
   <h1>She said YES!!! 🎉💙</h1>
   <h2 id="foreverText">Nikita ❤️ Ajeet Forever</h2>
+
+  <!-- 💋 Kiss -->
   <div id="kissAnim">😘💋</div>
+
   <div id="loveTyping"></div>
 </div>
 
 <canvas id="fireworks"></canvas>
 
 <script>
-/* ❤️ Voice Button */
-function speakLove(){
-  let msg = new SpeechSynthesisUtterance(
-    "Happy Valentine Nikita. I love you forever."
-  );
-  msg.rate = 0.9;
-  msg.pitch = 1.1;
-  speechSynthesis.speak(msg);
-}
-
-/* Heart Snowfall */
+/* ❄️ Heart Snowfall */
 function createSnowHeart() {
   const heart = document.createElement("div");
   heart.classList.add("snow-heart");
@@ -260,6 +278,15 @@ function createSnowHeart() {
 }
 setInterval(createSnowHeart,400);
 
+/* Slideshow */
+let slides=document.querySelectorAll(".slideshow img");
+let current=0;
+setInterval(()=>{
+  slides[current].classList.remove("active");
+  current=(current+1)%slides.length;
+  slides[current].classList.add("active");
+},3500);
+
 /* Proposal */
 function showProposal(){
   document.getElementById("proposal").classList.remove("hidden");
@@ -270,6 +297,18 @@ function showProposal(){
 function moveNo(btn){
   btn.style.transform=`translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
+
+/* Timer */
+const startDate=new Date("2018-07-17T00:00:00");
+function updateTimer(){
+  const now=new Date();
+  const diff=now-startDate;
+  const days=Math.floor(diff/(1000*60*60*24));
+  document.getElementById("timer").innerHTML=`${days} Days Together 💙`;
+  document.getElementById("totalDays").innerHTML=`Since 17 July 2018 ❤️`;
+}
+setInterval(updateTimer,1000);
+updateTimer();
 
 /* Typing */
 function typeLove(){
@@ -285,7 +324,7 @@ function typeLove(){
   type();
 }
 
-/* Fireworks */
+/* ❤️ Heart Fireworks */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
@@ -352,7 +391,11 @@ animateFireworks();
 /* Celebration */
 function celebrate(){
   document.getElementById("celebration").style.display="flex";
-  document.getElementById("kissAnim").classList.add("show");
+
+  // Kiss animation
+  const kiss=document.getElementById("kissAnim");
+  kiss.classList.add("show");
+
   startFireworks();
   typeLove();
 }
