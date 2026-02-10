@@ -9,10 +9,30 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#6dd5fa,#b2fefa);
+  background: black;
   color: white;
   text-align: center;
   overflow-x: hidden;
+}
+
+/* 🌌 Blurred Background Slideshow */
+#bgSlideshow {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px);
+  opacity: 0.35;
+  z-index: -2;
+  transition: background-image 2s ease-in-out;
+}
+
+/* Dark Overlay */
+#bgOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: -1;
 }
 
 .container {
@@ -109,27 +129,43 @@ button {
   border-radius: 20px;
 }
 
-/* 💞 Glowing Floating Timer */
+/* 💞 Timer Glow + Heartbeat Pulse */
 #timerBox {
-  animation: floatTimer 2s ease-in-out infinite alternate;
-  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+  animation: floatTimer 2s ease-in-out infinite alternate,
+             heartbeat 1.5s infinite;
+  box-shadow: 0 0 25px rgba(255,255,255,0.7);
 }
 @keyframes floatTimer {
   from { transform: translateY(0); }
-  to { transform: translateY(-10px); }
+  to { transform: translateY(-12px); }
 }
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
 #timer {
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: bold;
+  text-shadow: 0 0 12px #00aaff, 0 0 25px white;
+}
+
+#totalDaysLine {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 12px;
   color: #fff;
-  text-shadow: 0 0 12px #00aaff, 0 0 20px #ffffff;
+  text-shadow: 0 0 15px #ff4f7b, 0 0 25px white;
 }
 
 /* 🎉 Celebration */
 #celebration {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0,0,0,0.75);
   backdrop-filter: blur(12px);
   display: none;
   justify-content: center;
@@ -178,6 +214,10 @@ button {
 
 <body>
 
+<!-- 🌌 Background Slideshow -->
+<div id="bgSlideshow"></div>
+<div id="bgOverlay"></div>
+
 <!-- Floating Hearts -->
 <div class="floating-hearts">
   <span style="left:10%">💙</span>
@@ -222,7 +262,7 @@ button {
   <div class="card" id="timerBox">
     <h2>Hum Kab Se Saath Hain 💞</h2>
     <h3 id="timer"></h3>
-    <p id="totalDays"></p>
+    <div id="totalDaysLine"></div>
   </div>
 
   <!-- Love Letter -->
@@ -241,11 +281,8 @@ button {
 <!-- Celebration -->
 <div id="celebration">
   <h1>She said YES!!! 🎉💙</h1>
-
   <h2 id="foreverText">Nikita ❤️ Ajeet Forever</h2>
-
   <div id="kissAnim">😘💋</div>
-
   <p style="font-size:1.4rem;">I love you Nikita 💙</p>
 </div>
 
@@ -264,7 +301,7 @@ function typeEffect(){
 }
 typeEffect();
 
-/* ❄️ Heart Snowfall Generator */
+/* ❄️ Heart Snowfall */
 function createSnowHeart(){
   const heart = document.createElement("div");
   heart.classList.add("snow-heart");
@@ -273,7 +310,6 @@ function createSnowHeart(){
   heart.style.animationDuration = (4 + Math.random()*3) + "s";
   heart.style.fontSize = (16 + Math.random()*15) + "px";
   document.body.appendChild(heart);
-
   setTimeout(()=>heart.remove(),7000);
 }
 setInterval(createSnowHeart,400);
@@ -289,21 +325,56 @@ function moveNo(btn){
     `translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
 
-/* Timer */
+/* 💞 Full Timer with Total Days */
 const startDate = new Date("2018-07-17T00:00:00");
+
 function updateTimer(){
   const now = new Date();
+
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
+
+  if(days < 0){
+    months--;
+    const prevMonthDays = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    days += prevMonthDays;
+  }
+  if(months < 0){
+    years--;
+    months += 12;
+  }
+
   const diff = now - startDate;
-  const totalDays = Math.floor(diff/(1000*60*60*24));
+  const totalDays = Math.floor(diff / (1000*60*60*24));
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const hours = Math.floor(totalSeconds / 3600) % 24;
+  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const seconds = totalSeconds % 60;
 
   document.getElementById("timer").innerHTML =
-    `${totalDays} Days Together 💙`;
+    `${years} Years, ${months} Months, ${days} Days<br>
+     ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds 💙`;
 
-  document.getElementById("totalDays").innerHTML =
-    `Since 17 July 2018 ❤️`;
+  document.getElementById("totalDaysLine").innerHTML =
+    `Total Days Together ❤️: ${totalDays}`;
 }
+
 setInterval(updateTimer,1000);
 updateTimer();
+
+/* 🌌 Background Photo Slideshow */
+const bgPhotos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
+let bgIndex = 0;
+const bgDiv = document.getElementById("bgSlideshow");
+
+function changeBackground(){
+  bgDiv.style.backgroundImage = `url('${bgPhotos[bgIndex]}')`;
+  bgIndex = (bgIndex + 1) % bgPhotos.length;
+}
+setInterval(changeBackground,4000);
+changeBackground();
 
 /* ❤️ Heart Fireworks */
 const canvas=document.getElementById("fireworks");
@@ -355,9 +426,7 @@ function animateFireworks(){
     p.x+=p.vx;
     p.y+=p.vy;
     p.alpha-=0.02;
-
     drawHeart(p.x,p.y,0.15,p.color,p.alpha);
-
     if(p.alpha<=0) particles.splice(index,1);
   });
 
@@ -368,11 +437,8 @@ animateFireworks();
 /* Celebration */
 function celebrate(){
   document.getElementById("celebration").style.display="flex";
-
   document.getElementById("kissAnim").classList.add("show");
-
   document.getElementById("music").play();
-
   startFireworks();
 }
 </script>
