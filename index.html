@@ -15,16 +15,23 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌌 Blurred Background Slideshow */
+/* 🌌 Blurred Background Slideshow (50% Blur + Zoom Effect) */
 #bgSlideshow {
   position: fixed;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(18px);
-  opacity: 0.35;
+  filter: blur(8px);
+  opacity: 0.55;
   z-index: -2;
   transition: background-image 2s ease-in-out;
+  animation: zoomBg 6s ease-in-out infinite alternate;
+}
+
+/* Zoom Animation */
+@keyframes zoomBg {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
 /* Dark Overlay */
@@ -157,7 +164,6 @@ button {
   font-size: 1.2rem;
   font-weight: bold;
   margin-top: 12px;
-  color: #fff;
   text-shadow: 0 0 15px #ff4f7b, 0 0 25px white;
 }
 
@@ -235,7 +241,6 @@ button {
 <div class="container">
 
   <h1>Ajeet ❤️ Nikita</h1>
-
   <h2 id="typingText"></h2>
 
   <p>Nikita, tum meri zindagi ka sabse khoobsurat hissa ho 💖</p>
@@ -325,9 +330,8 @@ function moveNo(btn){
     `translate(${Math.random()*160-80}px,${Math.random()*160-80}px)`;
 }
 
-/* 💞 Full Timer with Total Days */
+/* 💞 Timer */
 const startDate = new Date("2018-07-17T00:00:00");
-
 function updateTimer(){
   const now = new Date();
 
@@ -337,8 +341,7 @@ function updateTimer(){
 
   if(days < 0){
     months--;
-    const prevMonthDays = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-    days += prevMonthDays;
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
   }
   if(months < 0){
     years--;
@@ -346,11 +349,11 @@ function updateTimer(){
   }
 
   const diff = now - startDate;
-  const totalDays = Math.floor(diff / (1000*60*60*24));
+  const totalDays = Math.floor(diff/(1000*60*60*24));
 
-  const totalSeconds = Math.floor(diff / 1000);
-  const hours = Math.floor(totalSeconds / 3600) % 24;
-  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const totalSeconds = Math.floor(diff/1000);
+  const hours = Math.floor(totalSeconds/3600) % 24;
+  const minutes = Math.floor(totalSeconds/60) % 60;
   const seconds = totalSeconds % 60;
 
   document.getElementById("timer").innerHTML =
@@ -360,7 +363,6 @@ function updateTimer(){
   document.getElementById("totalDaysLine").innerHTML =
     `Total Days Together ❤️: ${totalDays}`;
 }
-
 setInterval(updateTimer,1000);
 updateTimer();
 
@@ -381,7 +383,6 @@ const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-
 let particles=[];
 const colors=["#ff4f7b","#ff0000","#00aaff"];
 
@@ -421,7 +422,6 @@ function drawHeart(x,y,size,color,alpha){
 
 function animateFireworks(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
   particles.forEach((p,index)=>{
     p.x+=p.vx;
     p.y+=p.vy;
@@ -429,7 +429,6 @@ function animateFireworks(){
     drawHeart(p.x,p.y,0.15,p.color,p.alpha);
     if(p.alpha<=0) particles.splice(index,1);
   });
-
   requestAnimationFrame(animateFireworks);
 }
 animateFireworks();
