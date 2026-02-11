@@ -45,19 +45,6 @@ body{
 }
 
 h1{font-size:2.2rem}
-p{font-size:1.1rem}
-
-/* ❤️ Floating hearts */
-.floating-hearts span{
-  position:fixed;
-  bottom:-20px;
-  font-size:25px;
-  animation:floatUp 6s linear infinite;
-  opacity:.7;
-}
-@keyframes floatUp{
-  to{transform:translateY(-110vh) scale(1.5);opacity:0}
-}
 
 /* ❄️ Heart snowfall */
 .snow-heart{
@@ -66,6 +53,7 @@ p{font-size:1.1rem}
   font-size:18px;
   animation:snowFall linear infinite;
   opacity:.85;
+  z-index:2;
 }
 @keyframes snowFall{
   to{transform:translateY(110vh) translateX(50px);opacity:0}
@@ -187,27 +175,30 @@ button{
 <div id="bgSlideshow"></div>
 <div id="bgOverlay"></div>
 
-<div class="floating-hearts">
-  <span style="left:10%">💙</span>
-  <span style="left:30%">❤️</span>
-  <span style="left:50%">💖</span>
-  <span style="left:70%">💕</span>
-  <span style="left:90%">💙</span>
-</div>
-
+<!-- 🎶 Background Music -->
 <audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
   <h1>Ajeet ❤️ Nikita</h1>
-  <h2 id="typingText"></h2>
 
+  <!-- Slideshow -->
   <div class="slideshow">
     <img src="photo1.jpg" class="active">
     <img src="photo2.jpg">
     <img src="photo3.jpg">
     <img src="photo4.jpg">
+  </div>
+
+  <!-- 🌹 Shayari After Photos -->
+  <div class="card">
+    <p style="font-size:1.2rem;line-height:1.8;">
+      हर पल में तुम,<br>
+      हर क्षण में तुम..<br>
+      मेरे लिए रास्ता भी तुम,<br>
+      मंजिल भी तुम… 💖
+    </p>
   </div>
 
   <div class="heart">💙</div>
@@ -220,13 +211,14 @@ button{
     <button class="no" onmouseover="moveNo(this)">No 🙈</button>
   </div>
 
+  <!-- Timer -->
   <div class="card" id="timerBox">
     <h2>Hum Kab Se Saath Hain 💞</h2>
     <h3 id="timer"></h3>
     <div id="totalDaysLine"></div>
   </div>
 
-  <!-- 💌 Love Shayari Card -->
+  <!-- Love Letter -->
   <div class="card">
     <h2>My Love for You 💌</h2>
     <p>
@@ -238,16 +230,12 @@ button{
       जितने भी साँसे चले मेरी,<br>
       हर साँस पर नाम तुम्हारा हो…<br><br>
 
-      हर पल में तुम,<br>
-      हर क्षण में तुम..<br>
-      मेरे लिए रास्ता भी तुम,<br>
-      मंजिल भी तुम… 💖<br><br>
-
       — Ajeet 💙
     </p>
   </div>
 </div>
 
+<!-- Celebration Screen -->
 <div id="celebration">
   <h1>She said YES!!! 🎉💙</h1>
   <h2 id="foreverText">Nikita ❤️ Ajeet Forever</h2>
@@ -257,17 +245,7 @@ button{
 <canvas id="fireworks"></canvas>
 
 <script>
-/* Typing */
-const text="I love you Nikita 💙";
-let t=0;
-(function type(){
-  if(t<text.length){
-    typingText.innerHTML+=text[t++];
-    setTimeout(type,120);
-  }
-})();
-
-/* Snowfall */
+/* ❄️ Heart Snowfall */
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="snow-heart";
@@ -313,13 +291,14 @@ setInterval(()=>{
   if(m<0){y--;m+=12}
 
   const diff=now-start;
-  const days=Math.floor(diff/86400000);
+  const totalDays=Math.floor(diff/86400000);
   const h=Math.floor(diff/3600000)%24;
   const min=Math.floor(diff/60000)%60;
   const s=Math.floor(diff/1000)%60;
 
-  timer.innerHTML=`${y} Years, ${m} Months, ${d} Days<br>${h} Hours, ${min} Minutes, ${s} Seconds 💙`;
-  totalDaysLine.innerHTML=`Total Days Together ❤️ ${days}`;
+  timer.innerHTML=`${y} Years, ${m} Months, ${d} Days<br>
+                   ${h} Hours, ${min} Minutes, ${s} Seconds 💙`;
+  totalDaysLine.innerHTML=`Total Days Together ❤️ ${totalDays}`;
 },1000);
 
 /* Fireworks */
@@ -343,8 +322,9 @@ setInterval(boom,900);
   requestAnimationFrame(draw);
 })();
 
-/* Celebration */
+/* Celebration + Hide Buttons */
 function celebrate(){
+  document.getElementById("proposal").style.display="none";
   celebration.style.display="flex";
   kissAnim.classList.add("show");
   music.play();
